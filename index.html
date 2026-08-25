@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Northstar Goods | Product Details</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap');
+
+        :root {
+            --ink: #f8f7f2;
+            --muted: #b8c1c0;
+            --teal: #94e2d1;
+            --line: rgba(255, 255, 255, .18);
+            --glass: rgba(255, 255, 255, .1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            background: #13252a;
+            background-image: radial-gradient(circle at 15% 10%, rgba(148, 226, 209, .2), transparent 25rem), radial-gradient(circle at 90% 85%, rgba(222, 162, 112, .18), transparent 27rem), linear-gradient(135deg, #13252a, #1d2931 55%, #332b27);
+        }
+
+        .page { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 64px; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; padding: 13px 18px; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; background: rgba(255,255,255,.07); box-shadow: inset 0 1px rgba(255,255,255,.16), 0 12px 30px rgba(0,0,0,.12); backdrop-filter: blur(20px) saturate(140%); }
+        .brand { color: var(--ink); font-size: .9rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+        .status { color: var(--teal); font-size: .78rem; }
+        .status::before { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px var(--teal); content: ''; }
+        .intro { max-width: 650px; margin-bottom: 28px; animation: rise .7s ease both; }
+        .kicker { margin: 0 0 12px; color: var(--teal); font-size: .75rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+        h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: clamp(2.7rem, 7vw, 5.8rem); line-height: .98; letter-spacing: 0; }
+        .intro-text { max-width: 500px; margin: 20px 0 0; color: var(--muted); line-height: 1.7; }
+        #product { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; min-height: 300px; }
+        .product-card { position: relative; display: flex; flex-direction: column; overflow: hidden; min-width: 0; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.05) 48%, rgba(255,255,255,.1)); box-shadow: 0 20px 55px rgba(0, 0, 0, .25), inset 0 1px rgba(255,255,255,.28), inset 0 -1px rgba(0,0,0,.12); backdrop-filter: blur(28px) saturate(145%); animation: rise .65s both; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+        .product-card:hover { border-color: rgba(148,226,209,.55); box-shadow: 0 26px 60px rgba(0,0,0,.35), 0 0 26px rgba(148,226,209,.1); transform: translateY(-7px); }
+        .product-card::before { position: absolute; top: -120px; left: 18%; width: 55%; height: 180px; border-radius: 50%; background: rgba(255,255,255,.14); filter: blur(35px); content: ''; pointer-events: none; }
+        .product-image { position: relative; display: grid; min-height: 240px; padding: 28px; place-items: center; background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.04)); border-bottom: 1px solid rgba(255,255,255,.12); }
+        .product-image::after { position: absolute; inset: 14px; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; content: ''; pointer-events: none; }
+        .product-image img { width: min(100%, 190px); height: 205px; object-fit: contain; filter: drop-shadow(12px 18px 14px rgba(0,0,0,.25)); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+        .product-image:hover img { transform: translateY(-8px) rotate(-3deg) scale(1.04); }
+        .product-info { position: relative; display: flex; flex: 1; flex-direction: column; padding: 24px; background: rgba(12, 30, 34, .12); }
+        .category { margin: 0 0 12px; color: var(--teal); font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+        .product-info h2 { margin: 0; font-family: 'Playfair Display', serif; font-size: 1.45rem; line-height: 1.15; letter-spacing: 0; }
+        .rating { margin: 16px 0 0; color: #f6d98b; font-size: .9rem; }
+        .rating span { margin-left: 8px; color: var(--muted); font-size: .88rem; }
+        .description { display: -webkit-box; margin: 16px 0 22px; overflow: hidden; color: var(--muted); line-height: 1.6; line-clamp: 3; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+        .purchase-row { display: flex; align-items: center; gap: 20px; margin-top: auto; }
+        .price { color: var(--ink); font-size: 2rem; font-weight: 700; }
+        .shop-button, .retry-button { border: 0; border-radius: 12px; padding: 14px 20px; color: #13252a; font: inherit; font-weight: 700; background: var(--teal); cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+        .shop-button:hover, .retry-button:hover { box-shadow: 0 10px 24px rgba(148,226,209,.25); transform: translateY(-2px); }
+        .loading, .error { padding: 60px 0; color: var(--muted); }
+        .error { color: #ffc2a7; }
+        @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 700px) { .topbar { margin-bottom: 36px; } #product { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; } .product-image { min-height: 210px; padding: 22px; } .product-image img { height: 175px; } .product-info { padding: 20px; } .product-info h2 { font-size: 1.25rem; } .purchase-row { flex-wrap: wrap; gap: 12px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <nav class="topbar" aria-label="Store navigation">
+            <span class="brand">Northstar Goods</span>
+            <span class="status">Live catalog</span>
+        </nav>
+        <header class="intro">
+            <p class="kicker">Curated everyday objects</p>
+            <h1>One good thing.</h1>
+            <p class="intro-text">A closer look at a useful piece from our quietly considered collection.</p>
+        </header>
+        <div class="search-wrapper" style="margin-bottom: 28px;">
+            <label for="search" class="visually-hidden">Search products</label>
+            <input type="search" id="search" placeholder="Search products..." aria-label="Search products" style="width: 100%; max-width: 420px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.07); color: var(--ink); font: inherit; outline: none; transition: border-color .2s, box-shadow .2s;">
+        </div>
+        <section id="product" aria-live="polite"><p class="loading">Loading product details...</p></section>
+    </main>
+
+    <script>
+        let productContainer = document.getElementById('product');
+        let searchInput = document.getElementById('search');
+        let allProducts = [];
+
+        function loadProduct() {
+            productContainer.innerHTML = '<p class="loading">Loading product details...</p>';
+            fetch('https://fakestoreapi.com/products')
+                .then(response => {
+                    if (!response.ok) throw new Error('Product request failed');
+                    return response.json();
+                })
+                .then(products => {
+                    console.log(products);
+                    allProducts = products;
+                    renderProducts(allProducts);
+                })
+                .catch(error => {
+                    console.error(error);
+                    productContainer.innerHTML = '<div class="error">Unable to load this product. <button class="retry-button" type="button" onclick="loadProduct()">Try again</button></div>';
+                });
+        }
+
+        function renderProducts(products) {
+            productContainer.innerHTML = products.map((product, index) => `
+                <article class="product-card" style="animation-delay: ${index * 70}ms">
+                    <div class="product-image"><img src="${product.image}" alt="${product.title}"></div>
+                    <div class="product-info">
+                        <p class="category">${product.category}</p>
+                        <h2>${product.title}</h2>
+                        <p class="rating">${'★'.repeat(Math.round(product.rating.rate))}<span>${product.rating.rate} / 5</span></p>
+                        <p class="description">${product.description}</p>
+                        <div class="purchase-row"><strong class="price">$${product.price.toFixed(2)}</strong><button class="shop-button" type="button">Add to bag</button></div>
+                    </div>
+                </article>`).join('');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allProducts.filter(p =>
+                p.title.toLowerCase().includes(query) ||
+                p.category.toLowerCase().includes(query) ||
+                p.description.toLowerCase().includes(query)
+            );
+            renderProducts(filtered);
+        });
+
+        loadProduct();
+    </script>
+</body>
+</html>
